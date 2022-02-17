@@ -1,0 +1,1 @@
+print("Už je to skoro hotové!")
