@@ -1,31 +1,20 @@
-from apify_client import ApifyClient
-import pymysql
+import fastapi
 
-connection = pymysql.connect(host="localhost",user="root",passwd="",database="test")
-cursor = connection.cursor()
+tags_metadata = [
+    {
+        "name": "Booking reservations",
+        "description": "Api used to book your hotel reservations.",
+    }
+]
 
-client = ApifyClient("apify_api_kY3re4QxTgH4Apsz0xyJVtrYiYmlEB0ahVcm")
+app = fastapi.FastAPI(
+    title="Booking service",
+    description="something special",
+    version="1.0.0",
+    openapi_tags=tags_metadata,
+)
 
-# Prepare the actor input
-run_input = {
-    "search": "Prague",
-    "destType": "city",
-    "maxPages": 2,
-    "sortBy": "distance_from_search",
-    "currency": "USD",
-    "language": "en-us",
-    "minMaxPrice": "100-150",
-    "proxyConfig": { "useApifyProxy": True },
-    "extendOutputFunction": "($) => { return {} }",
-}
-
-run = client.actor("dtrungtin/booking-scraper").call(run_input=run_input)
-
-for item in client.dataset(run["defaultDatasetId"]).iterate_items():
-    print(item)
-
-insert_reservation = "INSERT INTO reservations(customer_ID, check_in_date, check_out_date, hotel, price) VALUES('1', '2022-04-06', '2022-04-09', 'Park In', '139');"
-cursor.execute(insert_reservation)
-
-connection.commit()
-connection.close()
+#@app.get(
+#    "/booking",
+#    response_model=List
+#)
