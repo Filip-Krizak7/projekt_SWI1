@@ -7,3 +7,5 @@ need to execute before installation:
 -   pip install uvicorn
 -   pip install typer
 -   pip install fastapi
+-   pip install passlib
+-   pip install python-multipart
