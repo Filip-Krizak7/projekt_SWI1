@@ -106,7 +106,7 @@ sqlite_url = f"sqlite:///{sqlite_file_name}"
 engine = create_engine(sqlite_url, echo=True,)
 
 def create_heroes():  # 
-    hero_1 = schemas.users(name="filipk", full_name="Filip Křižák", email="sadasdsavdbds@asdsd.com", hashed_password="fakehashedsecret", disabled="False")  # 
+    hero_1 = schemas.users(username="filipk", full_name="Filip Křižák", email="sadasdsavdbds@asdsd.com", hashed_pass="fakehashedsecret", disabled="False")  # 
 
     with Session(engine) as session:  # 
         session.add(hero_1)  # 
@@ -114,13 +114,21 @@ def create_heroes():  #
 
 @app.get("/show_users")
 def select_heroes():
-    with Session(engine) as session:
-        heroes = session.exec(select(schemas.users)).all()
-        print(heroes)
+    with Session(engine) as session:  # 
+        statement = select(schemas.users)  # 
+        results = session.exec(statement)  # 
+        for hero in results:  # 
+            print(hero)
+#def select_heroes():
+ #   with Session(engine) as session:
+  #      heroes = session.exec(select(schemas.users)).all()
+   #     return heroes
 
 @app.post("/new_user")
 def create_new_user():
-    create_engine
+    create_heroes()
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="127.0.0.1", port=8000)
+    #print(fake_users_db)
+    select_heroes()
+    #uvicorn.run(app, host="127.0.0.1", port=8000)
