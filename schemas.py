@@ -3,6 +3,14 @@ from enum import Enum
 from typing import Any, Optional
 
 from pydantic import BaseModel, Field
+from sqlmodel import Field, Session, SQLModel
+
+class users(SQLModel, table=True):
+    username: str = Field(primary_key=True)
+    full_name: Optional[str] = None
+    email: Optional[str] = None
+    hashed_pass: str
+    disabled: Optional[str] = None
 
 class Token(BaseModel):
     access_token: str

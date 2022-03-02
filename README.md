@@ -9,3 +9,4 @@ need to execute before installation:
 -   pip install fastapi
 -   pip install passlib
 -   pip install python-multipart
+-   pip install sqlmodel

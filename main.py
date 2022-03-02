@@ -1,11 +1,15 @@
 from copy import copy
 from datetime import datetime, timedelta
+from msilib import Table
+import select
 from typing import List, Optional
 
 from fastapi import Depends, FastAPI, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 #from jose import JWT
 from passlib.context import CryptContext
+from sqlalchemy import table
+from sqlmodel import Field, Session, SQLModel, create_engine, select, insert
 import uvicorn
 
 import schemas
@@ -21,7 +25,6 @@ app = FastAPI(
     title="Booking service",
     description="something special",
     version="1.0.0",
-    #openapi_tags=tags_metadata,
 )
 
 fake_users_db = {
@@ -69,7 +72,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
     return user
 
 
-async def get_current_active_user(current_user: schemas.User = Depends(get_current_user)):
+async def get_current_active_user(current_user: schemas.User = Depends(get_current_user)): #prepsat protoze disable je ted string
     if current_user.disabled:
         raise HTTPException(status_code=400, detail="Inactive user")
     return current_user
@@ -96,6 +99,28 @@ async def read_users_me(current_user: schemas.User = Depends(get_current_active_
 def hello():
     hello = "Hello world!"
     return hello
+
+sqlite_file_name = "databaze1.db"
+sqlite_url = f"sqlite:///{sqlite_file_name}"
+
+engine = create_engine(sqlite_url, echo=True,)
+
+def create_heroes():  # 
+    hero_1 = schemas.users(name="filipk", full_name="Filip Křižák", email="sadasdsavdbds@asdsd.com", hashed_password="fakehashedsecret", disabled="False")  # 
+
+    with Session(engine) as session:  # 
+        session.add(hero_1)  # 
+        session.commit()
+
+@app.get("/show_users")
+def select_heroes():
+    with Session(engine) as session:
+        heroes = session.exec(select(schemas.users)).all()
+        print(heroes)
+
+@app.post("/new_user")
+def create_new_user():
+    create_engine
 
 if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=8000)
