@@ -1,8 +1,11 @@
 from copy import copy
 from datetime import datetime, timedelta
+from dis import dis
 from msilib import Table
 import select
+from imp import reload
 from typing import List, Optional
+from xmlrpc.client import DateTime
 
 from fastapi import Depends, FastAPI, Form, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
@@ -12,7 +15,7 @@ from sqlmodel import Field, Session, SQLModel, create_engine, select, insert
 import uvicorn
 from imp import reload
 
-import schemas
+import schemas, user_registration, hotel_data
 
 tags_metadata = [
     {
@@ -27,10 +30,6 @@ app = FastAPI(
     version="1.0.0",
 )
 
-def fake_hash_password(password: str):
-    return "fakehashed" + password
-
-
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 def get_user(db, username: str):
@@ -40,7 +39,7 @@ def get_user(db, username: str):
 
 
 def fake_decode_token(token):
-    user = get_user(select_heroes(), token)
+    user = get_user(user_registration.select_users(), token)
     return user
 
 
@@ -63,7 +62,7 @@ async def get_current_active_user(current_user: schemas.User = Depends(get_curre
 
 @app.post("/token")
 async def login(form_data: OAuth2PasswordRequestForm = Depends()):
-    user_dict = select_heroes().get(form_data.username)
+    user_dict = user_registration.select_users().get(form_data.username)
     if not user_dict:
         raise HTTPException(status_code=400, detail="Incorrect username or password")
     user = schemas.UserInDB(**user_dict)
@@ -78,40 +77,18 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends()):
 async def read_users_me(current_user: schemas.User = Depends(get_current_active_user)):
     return current_user
 
-@app.get("/hello")
-def hello():
-    hello = "Hello world!"
-    return hello
-
-sqlite_file_name = "databaze1.db"
-sqlite_url = f"sqlite:///{sqlite_file_name}"
-
-engine = create_engine(sqlite_url, echo=True,)
-
 @app.get("/show_users")
-def select_heroes():
-    with Session(engine) as session:  # 
-        statement = select(schemas.users)  # 
-        results = session.exec(statement)  # 
-        users_db = {}
-        for hero in results:  # 
-            users_db.update({hero.username: {        
-            "username": hero.username,
-            "full_name": hero.full_name,
-            "email": hero.full_name,
-            "hashed_password": hero.hashed_pass,
-            "disabled": hero.disabled}})
-        return users_db
+def show_users():
+    print(user_registration.select_users())
 
 @app.post("/new_user")
-def create_heroes(username: str = Form(...), full_name: str = Form(...), email: str = Form(...), hashed_pass: str = Form(...), disabled: str = Form(...)):  # zmenit disabled na enum string True/False
-    hero_1 = schemas.users(username=username, full_name=full_name, email=email, hashed_pass=hashed_pass, disabled=disabled)  # 
+def create_user(username: str = Form(...), full_name: str = Form(...), email: str = Form(...), hashed_pass: str = Form(...), disabled: str = Form(...)):
+    user_registration.create_users(username, full_name, email, hashed_pass, disabled)
 
-    with Session(engine) as session:  # 
-        session.add(hero_1)  # 
-        session.commit()
+@app.post("/search_hotel")
+def search_hotel(city: str = Form(...), maxPages: int = Form(...), sortBy: str = Form(...), minPrice: int = Form(...), maxPrice: int = Form(...), 
+rooms: int = Form(...), adults: int = Form(...), children: int = Form(...)):
+    print(hotel_data.get_hotels(city, maxPages, sortBy, minPrice, maxPrice, rooms, adults, children))
 
 if __name__ == "__main__":
-    #select_heroes()
-    #print(fake_users_db)
     uvicorn.run(app, host="127.0.0.1", port=8000) # nastavit reload na True

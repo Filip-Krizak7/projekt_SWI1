@@ -1,10 +1,29 @@
-#import pymysql
+from sqlalchemy import create_engine
+from sqlmodel import Session, create_engine, select
 
-#connection = pymysql.connect(host="localhost",user="root",passwd="",database="test")
-#cursor = connection.cursor()
+import schemas
 
-#insert_reservation = "INSERT INTO reservations(customer_ID, check_in_date, check_out_date, hotel, price) VALUES('1', '2022-04-06', '2022-04-09', 'Park In', '139');"
-#cursor.execute(insert_reservation)
+sqlite_file_name = "databaze1.db"
+sqlite_url = f"sqlite:///{sqlite_file_name}"
 
-#connection.commit()
-#connection.close()
+engine = create_engine(sqlite_url, echo=True,)
+
+def select_users():
+    with Session(engine) as session:   
+        statement = select(schemas.users)   
+        results = session.exec(statement)   
+        users_db = {}
+        for user in results:   
+            users_db.update({user.username: {        
+            "username": user.username,
+            "full_name": user.full_name,
+            "email": user.full_name,
+            "hashed_password": user.hashed_pass,
+            "disabled": user.disabled}})
+        return users_db
+
+def create_users(username, full_name, email, hashed_pass, disabled):  # zmenit disabled na enum string True/False
+    user = schemas.users(username=username, full_name=full_name, email=email, hashed_pass=hashed_pass, disabled=disabled)
+    with Session(engine) as session:  
+        session.add(user)  
+        session.commit()
