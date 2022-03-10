@@ -8,6 +8,7 @@ from typing import List, Optional
 from xmlrpc.client import DateTime
 
 from fastapi import Depends, FastAPI, Form, HTTPException, status
+from passlib.context import CryptContext
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 #from jose import JWT
 from sqlalchemy import table
@@ -31,12 +32,18 @@ app = FastAPI(
 )
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+def verify_password(plain_password, hashed_password):
+    return pwd_context.verify(plain_password, hashed_password)
+
+def get_password_hash(password):
+    return pwd_context.hash(password)
 
 def get_user(db, username: str):
     if username in db:
         user_dict = db[username]
         return schemas.UserInDB(**user_dict)
-
 
 def fake_decode_token(token):
     user = get_user(user_registration.select_users(), token)
@@ -67,7 +74,7 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends()):
         raise HTTPException(status_code=400, detail="Incorrect username or password")
     user = schemas.UserInDB(**user_dict)
     password = form_data.password
-    if not password == user.hashed_password:
+    if not password.__eq__(user.hashed_password):
         raise HTTPException(status_code=400, detail="Incorrect username or password")
 
     return {"access_token": user.username, "token_type": "bearer"}
@@ -79,16 +86,16 @@ async def read_users_me(current_user: schemas.User = Depends(get_current_active_
 
 @app.get("/show_users")
 def show_users():
-    print(user_registration.select_users())
+    return user_registration.select_users()
 
 @app.post("/new_user")
-def create_user(username: str = Form(...), full_name: str = Form(...), email: str = Form(...), hashed_pass: str = Form(...), disabled: str = Form(...)):
+def create_user(username: str = Form(...), full_name: str = Form(...), email: str = Form(...), hashed_pass: str = Form(...), disabled: schemas.Disabled = Form(...)):
     user_registration.create_users(username, full_name, email, hashed_pass, disabled)
 
 @app.post("/search_hotel")
-def search_hotel(city: str = Form(...), maxPages: int = Form(...), sortBy: str = Form(...), minPrice: int = Form(...), maxPrice: int = Form(...), 
+def search_hotel(city: str = Form(...), maxPages: int = Form(...), sortBy: schemas.SortBy = Form(...), minPrice: int = Form(...), maxPrice: int = Form(...), 
 rooms: int = Form(...), adults: int = Form(...), children: int = Form(...)):
-    print(hotel_data.get_hotels(city, maxPages, sortBy, minPrice, maxPrice, rooms, adults, children))
+    return hotel_data.get_hotels(city, maxPages, sortBy, minPrice, maxPrice, rooms, adults, children)
 
 if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=8000) # nastavit reload na True

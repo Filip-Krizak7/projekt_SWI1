@@ -1,16 +1,17 @@
 from apify_client import ApifyClient
 from datetime import datetime, timedelta
-import requests
+import schemas
 
-def get_hotels(city: str, maxPages: int, sortBy: str, minPrice: int, maxPrice: int, rooms: int, adults: int,children: int):
+def get_hotels(city: str, maxPages: int, sortBy: schemas.SortBy, minPrice: int, maxPrice: int, rooms: int, adults: int,children: int):
 
     minMaxPrice = f"{minPrice}-{maxPrice}"
+    hotels = []
         
     run_input = {
     "search": city,
     "destType": "city",
     "maxPages": maxPages,
-    "sortBy": sortBy,
+    "sortBy": sortBy.value,
     "currency": "USD",
     "language": "en-us",
     "minMaxPrice": minMaxPrice,
@@ -28,6 +29,6 @@ def get_hotels(city: str, maxPages: int, sortBy: str, minPrice: int, maxPrice: i
     run = client.actor("dtrungtin/booking-scraper").call(run_input=run_input)
 
     for item in client.dataset(run["defaultDatasetId"]).iterate_items():
-        return item
+        hotels.append(item)
 
-#get_hotels("Prague", 1, "price", 100, 150, 1, 1, 0)
+    return(hotels)

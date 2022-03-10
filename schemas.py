@@ -29,3 +29,13 @@ class User(BaseModel):
 class UserInDB(User):
     #password: str
     hashed_password: str
+
+class SortBy(Enum):
+    PRICE = "price"
+    CLASS = "class"
+    DISTANCE = "distance_from_search"
+    REVIEW = "bayesian_review_score"
+    
+class Disabled(Enum):
+    FALSE = "False"
+    TRUE = "True"

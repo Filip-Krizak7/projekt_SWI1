@@ -22,8 +22,8 @@ def select_users():
             "disabled": user.disabled}})
         return users_db
 
-def create_users(username, full_name, email, hashed_pass, disabled):  # zmenit disabled na enum string True/False
-    user = schemas.users(username=username, full_name=full_name, email=email, hashed_pass=hashed_pass, disabled=disabled)
+def create_users(username, full_name, email, hashed_pass, disabled: schemas.Disabled):  # zmenit disabled na enum string True/False
+    user = schemas.users(username=username, full_name=full_name, email=email, hashed_pass=hashed_pass, disabled=disabled.value)
     with Session(engine) as session:  
         session.add(user)  
         session.commit()

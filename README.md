@@ -10,3 +10,4 @@ need to execute before installation:
 -   pip install passlib
 -   pip install python-multipart
 -   pip install sqlmodel
+-   pip install "python-jose[cryptography]"
