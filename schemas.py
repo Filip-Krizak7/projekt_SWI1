@@ -12,6 +12,14 @@ class users(SQLModel, table=True):
     hashed_pass: str
     disabled: Optional[str] = None
 
+class reservations(SQLModel, table=True):
+    url: str
+    name: str
+    address: str
+    price: int
+    checkIn: str
+    checkOut: str
+
 class Token(BaseModel):
     access_token: str
     token_type: str
@@ -27,7 +35,6 @@ class User(BaseModel):
     disabled: Optional[bool] = None
 
 class UserInDB(User):
-    #password: str
     hashed_password: str
 
 class SortBy(Enum):
