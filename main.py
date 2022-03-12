@@ -16,7 +16,7 @@ from sqlmodel import Field, Session, SQLModel, create_engine, select, insert
 import uvicorn
 from imp import reload
 
-import schemas, user_registration, hotel_data
+import schemas, user_registration, hotel_data, send_mail
 
 tags_metadata = [
     {
@@ -89,6 +89,7 @@ def show_users():
 @app.post("/new_user")
 def create_user(username: str = Form(...), full_name: str = Form(...), email: str = Form(...), hashed_pass: str = Form(...), disabled: schemas.Disabled = Form(...)):
     user_registration.create_users(username, full_name, email, hashed_pass, disabled)
+    send_mail.new_user_mail(username, email, full_name)
 
 @app.post("/search_hotel")
 def search_hotel(city: str = Form(...), maxPages: int = Form(...), sortBy: schemas.SortBy = Form(...), minPrice: int = Form(...), maxPrice: int = Form(...), 

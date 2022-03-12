@@ -20,7 +20,7 @@ def select_users():
             users_db.update({user.username: {        
             "username": user.username,
             "full_name": user.full_name,
-            "email": user.full_name,
+            "email": user.email,
             "hashed_password": user.hashed_pass,
             "disabled": user.disabled}})
         return users_db
