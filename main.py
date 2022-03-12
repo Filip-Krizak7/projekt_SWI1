@@ -37,9 +37,6 @@ pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 def verify_password(plain_password, hashed_password):
     return pwd_context.verify(plain_password, hashed_password)
 
-def get_password_hash(password):
-    return pwd_context.hash(password)
-
 def get_user(db, username: str):
     if username in db:
         user_dict = db[username]
@@ -74,7 +71,8 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends()):
         raise HTTPException(status_code=400, detail="Incorrect username or password")
     user = schemas.UserInDB(**user_dict)
     password = form_data.password
-    if not password.__eq__(user.hashed_password):
+    #if not password.__eq__(user.hashed_password):
+    if not verify_password(password, user.hashed_password):
         raise HTTPException(status_code=400, detail="Incorrect username or password")
 
     return {"access_token": user.username, "token_type": "bearer"}

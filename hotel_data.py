@@ -32,3 +32,5 @@ def get_hotels(city: str, maxPages: int, sortBy: schemas.SortBy, minPrice: int, 
         hotels.append(item)
 
     return(hotels)
+
+#get_hotels("Prague", 1, schemas.SortBy.PRICE, 100, 150, 1, 2, 0)
