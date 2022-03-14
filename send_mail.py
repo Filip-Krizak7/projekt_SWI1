@@ -28,14 +28,14 @@ def new_user_mail(username, email, full_name):
     smtp.sendmail(sender, send_to, msg.as_string())
     smtp.close()
 
-def reservation_mail(receiver):
+#def reservation_mail(receiver): #pouzit princip jako user_refistration.create_user() --> parametry rezervace 
 
-    msg = MIMEMultipart()
-    send_to = receiver
-    sender = 'booking.search.engine@gmail.com'
+    #msg = MIMEMultipart()
+    #send_to = receiver
+    #sender = 'booking.search.engine@gmail.com'
 
-    smtp = smtplib.SMTP('smtp.gmail.com', 587)
-    smtp.starttls()
-    smtp.login(sender, 'Secret12345')
-    smtp.sendmail(sender, send_to, msg.as_string())
-    smtp.close()
+    #smtp = smtplib.SMTP('smtp.gmail.com', 587)
+    #smtp.starttls()
+    #smtp.login(sender, 'Secret12345')
+    #smtp.sendmail(sender, send_to, msg.as_string())
+    #smtp.close()
