@@ -59,7 +59,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
 
 
 async def get_current_active_user(current_user: schemas.User = Depends(get_current_user)): 
-    if current_user.disabled.__eq__("True"):
+    if not current_user.disabled.__eq__("True"):
         raise HTTPException(status_code=400, detail="Inactive user")
     return current_user
 
@@ -71,7 +71,6 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends()):
         raise HTTPException(status_code=400, detail="Incorrect username or password")
     user = schemas.UserInDB(**user_dict)
     password = form_data.password
-    #if not password.__eq__(user.hashed_password):
     if not verify_password(password, user.hashed_password):
         raise HTTPException(status_code=400, detail="Incorrect username or password")
 
@@ -86,15 +85,21 @@ async def read_users_me(current_user: schemas.User = Depends(get_current_active_
 def show_users():
     return user_registration.select_users()
 
-@app.post("/new_user")
-def create_user(username: str = Form(...), full_name: str = Form(...), email: str = Form(...), hashed_pass: str = Form(...), disabled: schemas.Disabled = Form(...)):
+@app.post("/new_user/{username}_{full_name}_{email}_{hashed_pass}_{disabled}")
+def create_user(username: str, full_name: str, email: str, hashed_pass: str, disabled: schemas.Disabled):
     user_registration.create_users(username, full_name, email, hashed_pass, disabled)
     send_mail.new_user_mail(username, email, full_name)
 
-@app.post("/search_hotel")
-def search_hotel(city: str = Form(...), maxPages: int = Form(...), sortBy: schemas.SortBy = Form(...), minPrice: int = Form(...), maxPrice: int = Form(...), 
-rooms: int = Form(...), adults: int = Form(...), children: int = Form(...)):
+@app.get("/hotel/{city}_{maxPage}_{sortBy}_{minPrice}_{maxPrice}_{rooms}_{adults}_{children}")
+def search_hotel(city: str, maxPages: int, sortBy: schemas.SortBy, minPrice: int, maxPrice: int, rooms: int, adults: int, 
+children: int, current_user: schemas.User = Depends(get_current_active_user)):
     return hotel_data.get_hotels(city, maxPages, sortBy, minPrice, maxPrice, rooms, adults, children)
+
+@app.post("/create_reservation/{url}_{name}_{address}_{price}_{room}_{persons}")
+def create_reservation(url: str, name: str, address: str, price: int, checkIn: str, checkOut: str, room: str, persons: int):
+    hotel_data.create_reservation(url=url, name=name, address=address, price=price, checkIn=checkIn, checkOut=checkOut, room=room, persons=persons)
+    #send_mail.reservation_mail()
+
 
 if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=8000) # nastavit reload na True

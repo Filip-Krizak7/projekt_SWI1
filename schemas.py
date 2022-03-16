@@ -12,13 +12,16 @@ class users(SQLModel, table=True):
     hashed_pass: str
     disabled: Optional[str] = None
 
-#class reservations(SQLModel, table=True):
- #   url: str
-  #  name: str
-   # address: str
-   # price: int
-   # checkIn: str
-   # checkOut: str
+class reservations(SQLModel, table=True):
+    url: str
+    name: str
+    address: str
+    price: int
+    checkIn: str
+    checkOut: str
+    room: str
+    persons: int
+    id: int = Field(primary_key=True)
 
 class Token(BaseModel):
     access_token: str

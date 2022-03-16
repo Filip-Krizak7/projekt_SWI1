@@ -2,6 +2,7 @@ import datetime
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 import smtplib
+import schemas
 
 def new_user_mail(username, email, full_name):
 
@@ -28,14 +29,31 @@ def new_user_mail(username, email, full_name):
     smtp.sendmail(sender, send_to, msg.as_string())
     smtp.close()
 
-#def reservation_mail(receiver): #pouzit princip jako user_refistration.create_user() --> parametry rezervace 
+def reservation_mail(receiver: schemas.User, url: str, name: str, address: str, price: int, roomType: str, persons: int):
+    msg = MIMEMultipart()
+    send_to = receiver.email
+    sender = 'booking.search.engine@gmail.com'
 
-    #msg = MIMEMultipart()
-    #send_to = receiver
-    #sender = 'booking.search.engine@gmail.com'
+    subject = "New reservation"
+    text = f"""Thank you for creating a new reservation:
+    
+    Full Name - {receiver.full_name}
+    Url: {url}
+    Name of the hotel: {name}
+    Address of the hotel: {address}
+    Price: {price}
+    Room type: {roomType}
+    Number of persons: {persons}
+    
+    Thank you for your support."""
 
-    #smtp = smtplib.SMTP('smtp.gmail.com', 587)
-    #smtp.starttls()
-    #smtp.login(sender, 'Secret12345')
-    #smtp.sendmail(sender, send_to, msg.as_string())
-    #smtp.close()
+    msg["From"] = "Booking-search-engine"
+    msg["Date"] =  datetime.datetime.now().strftime("%d-%m-%Y")
+    msg["Subject"] = subject
+    msg.attach(MIMEText(text))
+
+    smtp = smtplib.SMTP('smtp.gmail.com', 587)
+    smtp.starttls()
+    smtp.login(sender, 'Secret12345')
+    smtp.sendmail(sender, send_to, msg.as_string())
+    smtp.close()

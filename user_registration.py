@@ -3,7 +3,7 @@ from sqlmodel import Session, create_engine, select
 
 import schemas, main
 
-sqlite_file_name = "databaze1.db"
+sqlite_file_name = "projekt_SWI1/databaze1.db"
 sqlite_url = f"sqlite:///{sqlite_file_name}"
 
 engine = create_engine(sqlite_url, echo=True,)
