@@ -1,5 +1,6 @@
 from apify_client import ApifyClient
 from datetime import datetime, timedelta
+from fastapi import HTTPException
 import schemas
 
 from sqlalchemy import create_engine
@@ -51,7 +52,7 @@ def create_reservation(username: str, name: str, address: str, price: int, check
         results = session.exec(statement) 
         for item in results:
             if item == reservation:
-                raise RuntimeError('Reservation already exists!')
+                raise HTTPException(status_code=400, detail="Reservation already exists!")
         session.add(reservation)
         session.commit()
 
