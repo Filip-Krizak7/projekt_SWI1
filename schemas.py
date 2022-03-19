@@ -13,7 +13,7 @@ class users(SQLModel, table=True):
     disabled: Optional[str] = None
 
 class reservations(SQLModel, table=True):
-    url: str
+    username: str
     name: str
     address: str
     price: int

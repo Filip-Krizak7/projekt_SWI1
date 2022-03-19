@@ -29,7 +29,7 @@ def new_user_mail(username, email, full_name):
     smtp.sendmail(sender, send_to, msg.as_string())
     smtp.close()
 
-def reservation_mail(receiver: schemas.User, url: str, name: str, address: str, price: int, roomType: str, persons: int):
+def reservation_mail(receiver: schemas.User, name: str, address: str, price: int, roomType: str, persons: int, checkIn: str, checkOut: str):
     msg = MIMEMultipart()
     send_to = receiver.email
     sender = 'booking.search.engine@gmail.com'
@@ -38,12 +38,13 @@ def reservation_mail(receiver: schemas.User, url: str, name: str, address: str, 
     text = f"""Thank you for creating a new reservation:
     
     Full Name - {receiver.full_name}
-    Url: {url}
     Name of the hotel: {name}
     Address of the hotel: {address}
     Price: {price}
     Room type: {roomType}
     Number of persons: {persons}
+    Check In Date: {checkIn}
+    Check Out Date: {checkOut}
     
     Thank you for your support."""
 

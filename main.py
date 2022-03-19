@@ -92,14 +92,21 @@ def create_user(username: str, full_name: str, email: str, hashed_pass: str, dis
 
 @app.get("/hotel/{city}_{maxPage}_{sortBy}_{minPrice}_{maxPrice}_{rooms}_{adults}_{children}")
 def search_hotel(city: str, maxPages: int, sortBy: schemas.SortBy, minPrice: int, maxPrice: int, rooms: int, adults: int, 
-children: int, current_user: schemas.User = Depends(get_current_active_user)):
+children: int):
     return hotel_data.get_hotels(city, maxPages, sortBy, minPrice, maxPrice, rooms, adults, children)
 
-@app.post("/create_reservation/{url}_{name}_{address}_{price}_{room}_{persons}")
-def create_reservation(url: str, name: str, address: str, price: int, checkIn: str, checkOut: str, room: str, persons: int):
-    hotel_data.create_reservation(url=url, name=name, address=address, price=price, checkIn=checkIn, checkOut=checkOut, room=room, persons=persons)
-    #send_mail.reservation_mail()
+@app.post("/reservation/create/{name}_{address}_{price}_{room}_{persons}")
+def create_reservation(name: str, address: str, price: int, checkIn: str, checkOut: str, room: str, persons: int, current_user: schemas.User = Depends(get_current_active_user)):
+    hotel_data.create_reservation(current_user.username, name, address, price, checkIn, checkOut, room, persons)
+    send_mail.reservation_mail(current_user, name, address, price, room, persons, checkIn, checkOut)
 
+@app.get("/reservation/show/")
+def user_reservations(current_user: schemas.User = Depends(get_current_active_user)):
+    return hotel_data.reservations_from_user(current_user)
+
+@app.delete("/reservation/cancel/{id}")
+def cancel_registration(id: int, current_user: schemas.User = Depends(get_current_active_user)):
+    hotel_data.cancel_reservation(current_user, id)
 
 if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=8000) # nastavit reload na True

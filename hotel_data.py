@@ -43,8 +43,39 @@ def get_hotels(city: str, maxPages: int, sortBy: schemas.SortBy, minPrice: int, 
 
     return(hotels)
 
-def create_reservation(url: str, name: str, address: str, price: int, checkIn: str, checkOut: str, room: str, persons: int):
-    reservation = schemas.reservations
+def create_reservation(username: str, name: str, address: str, price: int, checkIn: str, checkOut: str, room: str, persons: int):
+    reservation = schemas.reservations(username=username, name=name, address=address, price=price, checkIn=checkIn, checkOut=checkOut, room=room, persons=persons)
     with Session(engine) as session:  
         session.add(reservation)  
         session.commit()
+
+def cancel_reservation(user: schemas.User, id: int):
+    with Session(engine) as session:
+        statement = select(schemas.reservations).where(schemas.reservations.id == id and schemas.reservations.username.__eq__(user.username))  # 
+        results = session.exec(statement)  
+        deleted_reservation = results.one()  
+
+        session.delete(deleted_reservation) 
+        session.commit()
+
+        print("Deleted reservation: ", deleted_reservation)  
+
+        if deleted_reservation is None:  # 
+            return "There's no your reservation with this ID"
+
+def reservations_from_user(user: schemas.User):
+    with Session(engine) as session:   
+        statement = select(schemas.reservations).where(schemas.reservations.username.__eq__(user.username))
+        results = session.exec(statement)   
+        reservation_db = {}
+        for reservation in results:   
+            reservation_db.update({ reservation.id: {       
+            "Name of the Hotel": reservation.name,
+            "Address": reservation.address,
+            "Price": reservation.price,
+            "Check In Date": reservation.checkIn,
+            "Check Out Date": reservation.checkOut,
+            "Room Type": reservation.room,
+            "Number of Persons": reservation.persons}})
+
+        return reservation_db
