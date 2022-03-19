@@ -1,5 +1,4 @@
-# projekt_SWI1
-plane ticket search engine
+# projekt_SWI1booking search engine
 
 need to execute before installation:
 -   pip install pymysql
@@ -12,3 +11,7 @@ need to execute before installation:
 -   pip install sqlmodel
 -   pip install "python-jose[cryptography]"
 -   pip install bcrypt
+=======
+booking service
+
+&Filip Křižák, Tomáš Skowronek
