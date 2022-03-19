@@ -45,8 +45,14 @@ def get_hotels(city: str, maxPages: int, sortBy: schemas.SortBy, minPrice: int, 
 
 def create_reservation(username: str, name: str, address: str, price: int, checkIn: str, checkOut: str, room: str, persons: int):
     reservation = schemas.reservations(username=username, name=name, address=address, price=price, checkIn=checkIn, checkOut=checkOut, room=room, persons=persons)
+    statement = select(schemas.reservations)
+
     with Session(engine) as session:  
-        session.add(reservation)  
+        results = session.exec(statement) 
+        for item in results:
+            if item == reservation:
+                raise RuntimeError('Reservation already exists!')
+        session.add(reservation)
         session.commit()
 
 def cancel_reservation(user: schemas.User, id: int):

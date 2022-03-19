@@ -106,7 +106,7 @@ def user_reservations(current_user: schemas.User = Depends(get_current_active_us
 
 @app.delete("/reservation/cancel/{id}")
 def cancel_registration(id: int, current_user: schemas.User = Depends(get_current_active_user)):
-    hotel_data.cancel_reservation(current_user, id)
+    return hotel_data.cancel_reservation(current_user, id)
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="127.0.0.1", port=8000) # nastavit reload na True
+    uvicorn.run(app, host="127.0.0.1", port=8000)
