@@ -36,7 +36,7 @@ def get_hotels(city: str, maxPages: int, sortBy: schemas.SortBy, minPrice: int, 
     "children": children,
     } 
 
-    client = ApifyClient("apify_api_kY3re4QxTgH4Apsz0xyJVtrYiYmlEB0ahVcm")
+    client = ApifyClient("apify_api_5cpM6jZRBKor2v16lqMLjtR6iEdu8C2ke8DQ")
     run = client.actor("dtrungtin/booking-scraper").call(run_input=run_input)
 
     for item in client.dataset(run["defaultDatasetId"]).iterate_items():
