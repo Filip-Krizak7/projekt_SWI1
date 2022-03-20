@@ -1,5 +1,6 @@
 from apify_client import ApifyClient
 from datetime import datetime, timedelta
+from fastapi import HTTPException
 import schemas
 
 from sqlalchemy import create_engine
@@ -35,7 +36,7 @@ def get_hotels(city: str, maxPages: int, sortBy: schemas.SortBy, minPrice: int, 
     "children": children,
     } 
 
-    client = ApifyClient("apify_api_kY3re4QxTgH4Apsz0xyJVtrYiYmlEB0ahVcm")
+    client = ApifyClient("apify_api_5cpM6jZRBKor2v16lqMLjtR6iEdu8C2ke8DQ")
     run = client.actor("dtrungtin/booking-scraper").call(run_input=run_input)
 
     for item in client.dataset(run["defaultDatasetId"]).iterate_items():
@@ -51,7 +52,7 @@ def create_reservation(username: str, name: str, address: str, price: int, check
         results = session.exec(statement) 
         for item in results:
             if item == reservation:
-                raise RuntimeError('Reservation already exists!')
+                raise HTTPException(status_code=400, detail="Reservation already exists!")
         session.add(reservation)
         session.commit()
 

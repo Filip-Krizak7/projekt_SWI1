@@ -1,20 +1,7 @@
-from copy import copy
-from datetime import datetime, timedelta
-from dis import dis
-from msilib import Table
-import select
-from imp import reload
-from typing import List, Optional
-from xmlrpc.client import DateTime
-
-from fastapi import Depends, FastAPI, Form, HTTPException, status
+from fastapi import Depends, FastAPI, HTTPException, status
 from passlib.context import CryptContext
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
-#from jose import JWT
-from sqlalchemy import table
-from sqlmodel import Field, Session, SQLModel, create_engine, select, insert
 import uvicorn
-from imp import reload
 
 import schemas, user_registration, hotel_data, send_mail
 

@@ -1,9 +1,9 @@
-from datetime import date, datetime, timedelta
+from datetime import timedelta
 from enum import Enum
-from typing import Any, Optional
+from typing import Optional
 
 from pydantic import BaseModel, Field
-from sqlmodel import Field, Session, SQLModel
+from sqlmodel import Field, SQLModel
 
 class users(SQLModel, table=True):
     username: str = Field(primary_key=True)
