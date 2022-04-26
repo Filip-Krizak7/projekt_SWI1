@@ -1,4 +1,6 @@
-from fastapi import Depends, FastAPI, HTTPException, status
+from datetime import datetime, timedelta
+from typing import Optional
+from fastapi import Body, Depends, FastAPI, HTTPException, status
 from passlib.context import CryptContext
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 import uvicorn
@@ -72,17 +74,16 @@ async def read_users_me(current_user: schemas.User = Depends(get_current_active_
 def show_users():
     return user_registration.select_users()
 
-@app.post("/new_user/{username}_{full_name}_{email}_{hashed_pass}_{disabled}")
+@app.post("/new_user/{username}/{full_name}/{email}/{hashed_pass}/{disabled}")
 def create_user(username: str, full_name: str, email: str, hashed_pass: str, disabled: schemas.Disabled):
     user_registration.create_users(username, full_name, email, hashed_pass, disabled)
     send_mail.new_user_mail(username, email, full_name)
 
-@app.get("/hotel/{city}_{maxPage}_{sortBy}_{minPrice}_{maxPrice}_{rooms}_{adults}_{children}")
-def search_hotel(city: str, maxPages: int, sortBy: schemas.SortBy, minPrice: int, maxPrice: int, rooms: int, adults: int, 
-children: int):
-    return hotel_data.get_hotels(city, maxPages, sortBy, minPrice, maxPrice, rooms, adults, children)
+@app.get("/hotel/{city}/{maxPage}/{sortBy}/{minPrice}/{maxPrice}/{rooms}/{adults}/{children}") #{checkIn}/{checkOut}/
+def search_hotel(city: str, maxPages: int, sortBy: schemas.SortBy, minPrice: int, maxPrice: int, rooms: int, adults: int, children: int, start_datetime: str, end_datetime: str):
+    return hotel_data.get_hotels(city, maxPages, sortBy, minPrice, maxPrice, start_datetime, end_datetime, rooms, adults, children)
 
-@app.post("/reservation/create/{name}_{address}_{price}_{room}_{persons}")
+@app.post("/reservation/create/{name}/{address}/{price}/{room}/{persons}")
 def create_reservation(name: str, address: str, price: int, checkIn: str, checkOut: str, room: str, persons: int, current_user: schemas.User = Depends(get_current_active_user)):
     hotel_data.create_reservation(current_user.username, name, address, price, checkIn, checkOut, room, persons)
     send_mail.reservation_mail(current_user, name, address, price, room, persons, checkIn, checkOut)

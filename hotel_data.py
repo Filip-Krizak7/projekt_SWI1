@@ -10,11 +10,18 @@ import schemas
 
 sqlite_file_name = "databaze1.db"
 sqlite_url = f"sqlite:///{sqlite_file_name}"
+format = "%Y-%m-%d"
 
 engine = create_engine(sqlite_url, echo=True,)
 
-def get_hotels(city: str, maxPages: int, sortBy: schemas.SortBy, minPrice: int, maxPrice: int, rooms: int, adults: int,children: int):
+def get_hotels(city: str, maxPages: int, sortBy: schemas.SortBy, minPrice: int, maxPrice: int, checkIn: str, checkOut: str, rooms: int, adults: int, children: int):
 
+    try:
+        datetime.strptime(checkIn, format).date()
+        datetime.strptime(checkOut, format).date()
+    except ValueError:
+        print("This is the incorrect date string format. It should be YYYY-MM-DD")
+    
     minMaxPrice = f"{minPrice}-{maxPrice}"
     hotels = []
         
@@ -29,8 +36,8 @@ def get_hotels(city: str, maxPages: int, sortBy: schemas.SortBy, minPrice: int, 
     "proxyConfig": { "useApifyProxy": True },
     "extendOutputFunction": "($) => { return {} }",
     "simple": True,
-    "checkIn": datetime.date(datetime.now()),
-    "checkOut": datetime.date(datetime.now()) + timedelta(days=1),
+    "checkIn": datetime.strptime(checkIn, format).date(),
+    "checkOut": datetime.strptime(checkOut, format).date(),
     "rooms": rooms,
     "adults": adults,
     "children": children,
@@ -44,7 +51,14 @@ def get_hotels(city: str, maxPages: int, sortBy: schemas.SortBy, minPrice: int, 
 
     return(hotels)
 
-def create_reservation(username: str, name: str, address: str, price: int, checkIn: str, checkOut: str, room: str, persons: int):
+def create_reservation(username: str, name: str, address: str, price: int, checkIn:str, checkOut: str, room: str, persons: int):
+
+    try:
+        datetime.strptime(checkIn, format).date()
+        datetime.strptime(checkOut, format).date()
+    except ValueError:
+        print("This is the incorrect date string format. It should be YYYY-MM-DD")
+
     reservation = schemas.reservations(username=username, name=name, address=address, price=price, checkIn=checkIn, checkOut=checkOut, room=room, persons=persons)
     statement = select(schemas.reservations)
 
