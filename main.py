@@ -1,11 +1,12 @@
 from datetime import datetime, timedelta
 from typing import Optional
+import unittest
 from fastapi import Body, Depends, FastAPI, HTTPException, status
 from passlib.context import CryptContext
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 import uvicorn
 
-import schemas, user_registration, hotel_data, send_mail
+import schemas, user_registration, hotel_data, send_mail, tests
 
 tags_metadata = [
     {
