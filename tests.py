@@ -1,7 +1,4 @@
 import unittest
-from xmlrpc.client import boolean
-
-from sqlalchemy import false, true
 
 from hotel_data import get_hotels, create_reservation
 from user_registration import get_password_hash

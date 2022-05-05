@@ -6,7 +6,7 @@ from passlib.context import CryptContext
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 import uvicorn
 
-import schemas, user_registration, hotel_data, send_mail, tests
+import schemas, user_registration, hotel_data, send_mail
 
 tags_metadata = [
     {

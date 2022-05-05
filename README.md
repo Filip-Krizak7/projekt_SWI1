@@ -1,10 +1,10 @@
 # Booking search engine
 
-Foobar is a Python library for dealing with word pluralization.
+Application used for search and book accommodation.
 
 ## Installation
 
-Use the package manager [pip](https://pip.pypa.io/en/stable/) to install these commands:
+Use the package manager [pip](https://pip.pypa.io/en/stable/) to install these packages:
 
 ```bash
 -   pip install pymysql
@@ -19,25 +19,25 @@ Use the package manager [pip](https://pip.pypa.io/en/stable/) to install these c
 -   pip install bcrypt
 ```
 
-## Usage
+## Usage of endpoints
 
-```python
-import foobar
+### Read Users Me
+Shows information about the logged in user.
 
-# returns 'words'
-foobar.pluralize('word')
+### Create User
+Used to register a new user.
 
-# returns 'geese'
-foobar.pluralize('goose')
+### Search Hotel
+Searches for accommodation according to specified parameters.
 
-# returns 'phenomenon'
-foobar.singularize('phenomena')
-```
+### Create Reservation
+Used to create reservation foraccommodation according to specified parameters.
 
-## Contributing
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+### User Reservations
+Shows all reservations of the logged in user.
 
-Please make sure to update tests as appropriate.
+### Cancel reservations
+Used to cancel reservation of the logged in user based of the reservation ID.
 
 ## License
 &Filip Křižák, Tomáš Skowronek
