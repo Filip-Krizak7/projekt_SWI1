@@ -17,6 +17,7 @@ Use the package manager [pip](https://pip.pypa.io/en/stable/) to install these p
 -   pip install sqlmodel
 -   pip install "python-jose[cryptography]"
 -   pip install bcrypt
+-   pip install npm
 ```
 
 ## Usage of endpoints
