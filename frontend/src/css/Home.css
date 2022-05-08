@@ -1,0 +1,84 @@
+.__Home {
+  padding-top: 5rem;
+  width: 100%;
+  min-height: 100vh;
+  height: 100%;
+  background: linear-gradient(to bottom, #06beb55a 0%, #48b1bf4f 100%),
+    url(https://images.unsplash.com/photo-1598598795009-f80c5072e665?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1074&q=80)
+      no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  box-shadow: inset 0 0 0 1000px rgb(0 0 0 / 80%);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.__Home .text {
+  color: white !important;
+  width: 80%;
+  text-align: center;
+}
+.__Home .text h1 {
+  font-size: 2.5rem;
+}
+
+.__Home .search {
+  width: 60%;
+}
+
+.__Home .search .row label {
+  color: white;
+  font-size: 0.8rem;
+}
+
+.__Home .search .custom-button button {
+  border: 2px solid white !important;
+  color: white !important;
+}
+
+.__Home .search .custom-input:hover .input-group-text,
+.__Home .search .custom-input:hover .form-control,
+.__Home .search .custom-input:focus .input-group-text,
+.__Home .search .custom-input:focus .form-control {
+  background-color: white;
+}
+
+.__Home .content {
+  width: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.__Home .content .card,.__Home .content .card .card-body{
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+}
+
+.__Home .content .card .custom-card-name{
+    font-size: 1.3rem;
+    font-weight: 600;
+}
+.__Home .content .card .custom-card-address{
+    font-size: 1rem;
+}
+.__Home .content .card .c-bold{
+    font-weight: 600;
+}
+
+@media only screen and (max-width: 980px) {
+  .__Home {
+    font-size: 12px;
+  }
+  .__Home .text h1 {
+    font-size: 1.5rem;
+  }
+  .__Home .search {
+    width: 90%;
+  }
+}

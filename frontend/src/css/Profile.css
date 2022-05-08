@@ -1,0 +1,44 @@
+.__Profile {
+  padding-top: 5rem;
+  width: 100%;
+  min-height: 100vh;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.__Profile .text {
+  width: 80%;
+  text-align: center;
+}
+
+.__Profile .text h1 {
+  font-size: 2.5rem;
+}
+
+
+.__Profile .content{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.__Profile .content span{
+    margin: 1rem 0rem;
+    font-size: 1.5rem;
+}
+
+@media only screen and (max-width: 980px) {
+    .__Profile {
+      font-size: 12px;
+    }
+    .__Profile .text h1 {
+      font-size: 1.5rem;
+    }
+    .__Profile .content span{
+        font-size: 1rem;
+    }
+  }

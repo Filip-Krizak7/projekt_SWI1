@@ -1,0 +1,69 @@
+.__Navbar {
+    flex: 1;
+    width: 100% !important;
+    padding: 0.5rem 5rem !important;
+    min-height: 5rem !important;
+    background: rgba(255, 255, 255, 0.5) !important;
+    -webkit-backdrop-filter: saturate(180%) blur(20px) !important;
+    backdrop-filter: saturate(180%) blur(20px) !important;
+    position: fixed !important;
+    top: 0 !important;
+    z-index: 100000 !important;
+}
+.__Navbar .navbar-toggler .icon {
+    font-size: 2rem;
+}
+.__Navbar .logo {
+    height: 40px !important;
+    padding-right: 4rem;
+    transition: 500ms;
+    filter: grayscale(0) brightness(0);
+}
+.__Navbar .logo:hover {
+    filter: grayscale(1) brightness(1);
+    transition: 500ms;
+}
+.__Navbar .signup {
+    margin-left: 1rem !important;
+}
+.__Navbar .simple-nav-link {
+    color: black !important;
+    transition: 500ms;
+    font-weight: 700;
+    position: relative;
+}
+.__Navbar .simple-nav-link.active:after {
+    transition: 500ms;
+    background: none repeat scroll 0 0 transparent;
+    bottom: 0;
+    content: "";
+    display: none;
+    height: 2px;
+    left: 0;
+    position: absolute;
+    background: black;
+    transition: width 0.3s ease 0s, left 0.3s ease 0s;
+    width: 100%;
+}
+.__Navbar .simple-nav-link:hover {
+    color: rgba(0, 0, 0, 0.4) !important;
+    transition: 500ms;
+}
+.__Navbar .simple-nav-link:hover.active:after {
+    transition: 500ms;
+    background: rgba(0, 0, 0, 0.4);
+}
+@media only screen and (max-width: 980px) {
+    .__Navbar {
+        padding: 0.5rem 2rem !important;
+   }
+    .__Navbar .navbar-collapse .form-inline ul {
+        flex-direction: row !important;
+   }
+    .__Navbar .navbar-collapse .form-inline ul .signup {
+        margin-left: 1rem !important;
+   }
+   .__Navbar .logo {
+    height: 20px !important;
+}
+}

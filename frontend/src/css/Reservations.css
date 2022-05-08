@@ -1,0 +1,55 @@
+.__Reservations {
+  padding-top: 5rem;
+  width: 100%;
+  min-height: 100vh;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.__Reservations .text {
+  width: 80%;
+  text-align: center;
+}
+
+.__Reservations .text h1 {
+  font-size: 2.5rem;
+}
+
+.__Reservations .content {
+  width: 90%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.__Reservations .content .card,
+.__Reservations .content .card .card-body {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-direction: column;
+}
+
+.__Reservations .content .card .custom-card-name {
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+.__Reservations .content .card .custom-card-address {
+  font-size: 1rem;
+}
+.__Reservations .content .card .c-bold {
+  font-weight: 600;
+}
+
+
+@media only screen and (max-width: 980px) {
+    .__Reservations {
+      font-size: 12px;
+    }
+    .__Reservations .text h1 {
+      font-size: 1.5rem;
+    }
+  }

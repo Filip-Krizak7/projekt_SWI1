@@ -1,10 +1,11 @@
-from cgitb import text
 from datetime import datetime, timedelta
+from pickle import FALSE, TRUE
 from typing import Optional
-import unittest
 from fastapi import Body, Depends, FastAPI, HTTPException, status
 from passlib.context import CryptContext
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from fastapi.encoders import jsonable_encoder
+from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
 import schemas, user_registration, hotel_data, send_mail
@@ -20,6 +21,15 @@ app = FastAPI(
     title="Booking service",
     description="something special",
     version="1.0.0",
+)
+
+origins = ["*"]
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
@@ -54,6 +64,10 @@ async def get_current_active_user(current_user: schemas.User = Depends(get_curre
         raise HTTPException(status_code=400, detail="Inactive user")
     return current_user
 
+@app.get("/")
+async def welcome():
+    return "Welcome!"
+
 
 @app.post("/token")
 async def login(form_data: OAuth2PasswordRequestForm = Depends()):
@@ -64,8 +78,8 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends()):
     password = form_data.password
     if not verify_password(password, user.hashed_password):
         raise HTTPException(status_code=400, detail="Incorrect username or password")
-
-    return {"access_token": user.username, "token_type": "bearer"}
+    del user_dict["hashed_password"]
+    return {"access_token": user.username, "token_type": "bearer", "userdata": user_dict}
 
 
 @app.get("/users/me")
@@ -76,10 +90,22 @@ async def read_users_me(current_user: schemas.User = Depends(get_current_active_
 def show_users():
     return user_registration.select_users()
 
-@app.post("/new_user/{username}/{full_name}/{email}/{hashed_pass}/{disabled}")
-def create_user(username: str, full_name: str, email: str, hashed_pass: str, disabled: schemas.Disabled):
-    user_registration.create_users(username, full_name, email, hashed_pass, disabled)
-    send_mail.new_user_mail(username, email, full_name)
+# @app.post("/new_user/{username}/{full_name}/{email}/{hashed_pass}/{disabled}")
+# def create_user(username: str, full_name: str, email: str, hashed_pass: str, disabled: schemas.Disabled):
+#     print(disabled)
+    # user_registration.create_users(username, full_name, email, hashed_pass, disabled)
+    # send_mail.new_user_mail(username, email, full_name)
+
+@app.post("/new_user/")
+def create_user(user_data = Body(...)):
+    user_data = jsonable_encoder(user_data)
+    if user_data["disabled"]:
+        user_data["disabled"] = schemas.Disabled(schemas.Disabled.TRUE)
+    else:
+        user_data["disabled"] = schemas.Disabled(schemas.Disabled.FALSE)
+    user_registration.create_users(user_data["username"], user_data["full_name"], user_data["email"], user_data["hashed_pass"], user_data["disabled"])
+    send_mail.new_user_mail(user_data["username"], user_data["email"], user_data["full_name"])
+# to return error on frontend, set error in json object as {detail:"Error here..."}
 
 @app.get("/hotel/{city}/{maxPage}/{sortBy}/{minPrice}/{maxPrice}/{rooms}/{adults}/{children}") #{checkIn}/{checkOut}/
 def search_hotel(city: str, maxPages: int, sortBy: schemas.SortBy, minPrice: int, maxPrice: int, rooms: int, adults: int, children: int, start_datetime: str, end_datetime: str):

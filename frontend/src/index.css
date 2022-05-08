@@ -1,0 +1,169 @@
+@import url("https://fonts.googleapis.com/css2?family=Libre+Baskerville&family=Sora:wght@100;200;300;400&display=swap");
+#root {
+  font-family: "Sora", sans-serif !important;
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  overflow-x: hidden!important;
+}
+/* Input */
+.custom-input .input-group-text {
+  background-color: #eee;
+  border: none;
+  transition: 300ms;
+  border-bottom: 2px solid #eee;
+}
+.custom-input .form-control {
+  transition: 300ms;
+  background-color: #eee;
+  border: none;
+  padding: 12px 15px;
+  border-bottom: 2px solid #eee;
+}
+.custom-input .form-control:focus,
+.custom-input .form-control.focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+.custom-input:hover .input-group-text,
+.custom-input:hover .form-control,
+.custom-input:focus .input-group-text,
+.custom-input:focus .form-control {
+  background-color: #eeeeee7d;
+  transition: 300ms;
+  border-bottom: 2px solid var(--PC);
+}
+.custom-input:hover .input-group-text,
+.custom-input:focus .input-group-text {
+  color: var(--PC);
+}
+/* Button */
+.custom-button button {
+  width: 100%;
+  border-radius: 50px;
+  border: 2px solid var(--PC);
+  color: var(--PC);
+  font-weight: 900;
+  font-size: 1rem;
+  background: transparent;
+}
+.custom-button .btn-primary:hover,
+.custom-button .btn-primary:focus {
+  color: white;
+  background: var(--PC);
+  border: 2px solid var(--PC);
+  outline: none;
+  box-shadow: none;
+}
+a {
+  text-decoration: none;
+}
+.custom-spin {
+  width: 1rem !important;
+  height: 1rem !important;
+}
+:root {
+  --BGC: #fde7f9;
+  --BGI: linear-gradient(315deg, #fde7f9 0%, #aacaef 74%);
+  --PC: #536dfe;
+  --TPC: #121212;
+}
+
+/* Custom Button */
+.Button-Custom-1 {
+  font-family: "Sora", sans-serif !important;
+  color: inherit;
+  -webkit-text-decoration: none;
+  text-transform: unset !important;
+  text-decoration: none;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  box-sizing: border-box;
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: -ms-inline-flexbox;
+  display: inline-flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  overflow: hidden;
+  position: static;
+  text-align: start;
+  white-space: normal;
+  cursor: pointer;
+  border-radius: 24px !important;
+  height: 3rem !important;
+  padding: 0px 2rem !important;
+  width: 9rem !important;
+}
+.Button-Custom-1 .type {
+  font-weight: 700 !important;
+  font-size: 1rem !important;
+}
+
+.Button-Custom-1.white {
+  background: rgb(255, 255, 255) !important;
+  border: 1px solid rgb(0, 0, 0) !important;
+  color: rgb(0, 0, 0) !important;
+  transition: 500ms !important;
+}
+
+.Button-Custom-1.white:hover {
+  background: rgb(0, 0, 0) !important;
+  border: 1px solid rgb(255, 255, 255) !important;
+  color: rgb(255, 255, 255) !important;
+  transition: 500ms !important;
+}
+
+.Button-Custom-1.ooopen {
+  padding: 1.5rem 5rem !important;
+  width: fit-content !important;
+}
+
+.Button-Custom-1.black {
+  background: rgb(0, 0, 0) !important;
+  border: 1px solid rgb(255, 255, 255) !important;
+  color: rgb(255, 255, 255) !important;
+  transition: 500ms !important;
+}
+
+.Button-Custom-1.black:hover {
+  background: rgb(255, 255, 255) !important;
+  border: 1px solid rgb(0, 0, 0) !important;
+  color: rgb(0, 0, 0) !important;
+  transition: 500ms !important;
+}
+
+.Button-Custom-1.accent-1 {
+  background: #0d6efd !important;
+  border: 1px solid #0d6efd !important;
+  color: rgb(255, 255, 255) !important;
+  transition: 500ms !important;
+}
+
+.Button-Custom-1.accent-1:hover {
+  background: rgb(255, 255, 255) !important;
+  border: 1px solid white !important;
+  color: #0d6efd !important;
+  transition: 500ms !important;
+}
+
+@media only screen and (max-width: 980px) {
+  .Button-Custom-1 {
+    width: unset !important;
+    height: unset !important;
+    padding: 6px 12px !important;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  .navbar-expand-lg .navbar-collapse {
+    justify-content: space-between !important;
+  }
+}
