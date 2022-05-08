@@ -61,7 +61,7 @@ def create_reservation(username: str, name: str, address: str, price: int, check
         datetime.strptime(checkOut, format).date()
     except ValueError:
         print("This is the incorrect date string format. It should be YYYY-MM-DD")
-        return "This is the incorrect date string format. It should be YYYY-MM-DD"
+        return ValueError
 
     reservation = schemas.reservations(username=username, name=name, address=address,
                                        price=price, checkIn=checkIn, checkOut=checkOut, room=room, persons=persons)
