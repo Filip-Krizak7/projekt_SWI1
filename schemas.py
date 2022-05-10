@@ -23,13 +23,6 @@ class reservations(SQLModel, table=True):
     persons: int
     id: int = Field(primary_key=True)
 
-class Token(BaseModel):
-    access_token: str
-    token_type: str
-    token_expires_in: timedelta
-
-class TokenData(BaseModel):
-    username: Optional[str] = None
 
 class User(BaseModel):
     username: str
