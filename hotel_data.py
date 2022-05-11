@@ -22,7 +22,7 @@ def get_hotels(city: str, maxPages: int, sortBy: schemas.SortBy, minPrice: int, 
         datetime.strptime(checkOut, format).date()
     except ValueError:
         print("This is the incorrect date string format. It should be YYYY-MM-DD")
-        return "This is the incorrect date string format. It should be YYYY-MM-DD"
+        raise ValueError
 
     minMaxPrice = f"{minPrice}-{maxPrice}"
     hotels = []
@@ -70,7 +70,8 @@ def create_reservation(username: str, name: str, address: str, price: int, check
     with Session(engine) as session:
         results = session.exec(statement)
         for item in results:
-            if item == reservation:
+            if ((item.name.__eq__(reservation.name)) and (item.address.__eq__(reservation.address)) and
+            (item.room.__eq__(reservation.room)) and (item.checkIn.__eq__(reservation.checkIn)) and (item.checkOut.__eq__(reservation.checkOut))):
                 raise HTTPException(
                     status_code=400, detail="Reservation already exists!")
         session.add(reservation)
