@@ -14,7 +14,6 @@ format = "%Y-%m-%d"
 
 engine = create_engine(sqlite_url, echo=True,)
 
-
 def get_hotels(city: str, maxPages: int, sortBy: schemas.SortBy, minPrice: int, maxPrice: int, checkIn: str, checkOut: str, rooms: int, adults: int, children: int):
 
     try:
