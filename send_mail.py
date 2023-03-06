@@ -25,7 +25,7 @@ def new_user_mail(username, email, full_name):
 
     smtp = smtplib.SMTP('smtp.gmail.com', 587)
     smtp.starttls()
-    smtp.login(sender, 'Secret12345')
+    smtp.login(sender, 'jybovowcxaaizonx')
     smtp.sendmail(sender, send_to, msg.as_string())
     smtp.close()
 
@@ -55,6 +55,6 @@ def reservation_mail(receiver: schemas.User, name: str, address: str, price: int
 
     smtp = smtplib.SMTP('smtp.gmail.com', 587)
     smtp.starttls()
-    smtp.login(sender, 'Secret12345')
+    smtp.login(sender, 'jybovowcxaaizonx')
     smtp.sendmail(sender, send_to, msg.as_string())
     smtp.close()
