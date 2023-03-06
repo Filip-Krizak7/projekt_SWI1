@@ -4,7 +4,7 @@ Application used for search and book accommodation.
 
 ## Installation
 
-Use the package manager [pip](https://pip.pypa.io/en/stable/) to install these packages:
+Use the package manager [pip](https://pip.pypa.io/en/stable/) to install these packages or switch to venv:
 
 ```bash
 -   pip install pymysql
@@ -20,7 +20,10 @@ Use the package manager [pip](https://pip.pypa.io/en/stable/) to install these p
 -   pip install npm
 ```
 
-## Usage of endpoints
+## Start of backend 
+First enter the venv with command: venv/Scripts/Activate.ps1
+Then use command: python main.py
+Open 'localhost:8000/docs' in your browser
 
 ### Read Users Me
 Shows information about the logged in user.
