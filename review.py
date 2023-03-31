@@ -21,18 +21,6 @@ def write_review(username: str, hotel: str, text: str, rating: int):
 
 def get_reviews():
     with Session(engine) as session:
-        statement = select(schemas.reviews)
-        results = session.exec(statement)
-        reviews_db = []
-        for review in results:
-            reviews_db.append({
-                "_id": review.id,
-                "username": review.username,
-                "hotel": review.hotel,
-                "text": review.text,
-                "rating": review.rating})
+        reviews = session.exec(select(schemas.reviews)).all()
 
-        if not reviews_db:  
-            return "User didn't wrine any reviews!"
-
-        return reviews_db
+        return reviews

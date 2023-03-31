@@ -12,13 +12,13 @@ class users(SQLModel, table=True):
     hashed_pass: str
     disabled: Optional[str] = None
 
-    reservation: List["reservations"] = Relationship(back_populates="users")
-    review: List["reviews"] = Relationship(back_populates="users")
+    reservation: List["reservations"] = Relationship(back_populates="usern")
+    review: List["reviews"] = Relationship(back_populates="usern")
     
 class reviews(SQLModel, table=True):
     id: int = Field(primary_key=True)
 
-    username: Optional[str] = Field(default=None, foreign_key="users.usernamme")
+    username: Optional[str] = Field(default=None, foreign_key="users.username")
     usern: Optional[users] = Relationship(back_populates="review")
 
     hotel: Optional[str] = None
@@ -26,7 +26,7 @@ class reviews(SQLModel, table=True):
     rating: int
 
 class reservations(SQLModel, table=True):
-    username: str = Field(default=None, foreign_key="users.usernamme")
+    username: str = Field(default=None, foreign_key="users.username")
     usern: Optional[users] = Relationship(back_populates="reservation")
 
     name: str
