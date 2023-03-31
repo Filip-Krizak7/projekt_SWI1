@@ -121,7 +121,7 @@ def user_reservations(current_user: schemas.User = Depends(get_current_active_us
     return hotel_data.reservations_from_user(current_user)
 
 @app.get("/review/show/")
-def show_reviews(current_user: schemas.User = Depends(get_current_active_user)):
+def show_reviews():
     return review.get_reviews()
 
 @app.delete("/reservation/cancel/{id}")

@@ -1,9 +1,9 @@
 from datetime import timedelta
 from enum import Enum
-from typing import Optional
+from typing import List, Optional
 
 from pydantic import BaseModel, Field
-from sqlmodel import Field, SQLModel
+from sqlmodel import Field, Relationship, Session, SQLModel
 
 class users(SQLModel, table=True):
     username: str = Field(primary_key=True)
@@ -12,8 +12,23 @@ class users(SQLModel, table=True):
     hashed_pass: str
     disabled: Optional[str] = None
 
+    reservation: List["reservations"] = Relationship(back_populates="users")
+    review: List["reviews"] = Relationship(back_populates="users")
+    
+class reviews(SQLModel, table=True):
+    id: int = Field(primary_key=True)
+
+    username: Optional[str] = Field(default=None, foreign_key="users.usernamme")
+    usern: Optional[users] = Relationship(back_populates="review")
+
+    hotel: Optional[str] = None
+    text: Optional[str] = None
+    rating: int
+
 class reservations(SQLModel, table=True):
-    username: str
+    username: str = Field(default=None, foreign_key="users.usernamme")
+    usern: Optional[users] = Relationship(back_populates="reservation")
+
     name: str
     address: str
     price: int
