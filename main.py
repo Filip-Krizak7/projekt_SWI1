@@ -8,7 +8,7 @@ from fastapi.encoders import jsonable_encoder
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
-import schemas, user_registration, hotel_data, send_mail
+import schemas, user_registration, hotel_data, send_mail, review
 
 tags_metadata = [
     {
@@ -119,6 +119,10 @@ def create_reservation(name: str, address: str, price: int, checkIn: str, checkO
 @app.get("/reservation/show/")
 def user_reservations(current_user: schemas.User = Depends(get_current_active_user)):
     return hotel_data.reservations_from_user(current_user)
+
+@app.get("/review/show/")
+def show_reviews(current_user: schemas.User = Depends(get_current_active_user)):
+    return review.get_reviews()
 
 @app.delete("/reservation/cancel/{id}")
 def cancel_registration(id: int, current_user: schemas.User = Depends(get_current_active_user)):
