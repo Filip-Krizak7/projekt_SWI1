@@ -26,6 +26,12 @@ First enter the venv with command: venv/Scripts/Activate.ps1
 Then use command: python main.py
 Open 'localhost:8000/docs' in your browser
 
+## Start of frontend
+You need to have Node.js installed
+Switch to 'frontend' folder by: cd frontend
+Run 'npm install' if you are going to run the app for the first time
+Run 'npm start'
+
 ### Read Users Me
 Shows information about the logged in user.
 
@@ -45,5 +51,5 @@ Shows all reservations of the logged in user.
 Used to cancel reservation of the logged in user based of the reservation ID.
 
 ## License
-&Filip Křižák, Tomáš Skowronek
+&Filip Křižák, Martin Šašinka
 

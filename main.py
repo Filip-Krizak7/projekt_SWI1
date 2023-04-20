@@ -124,9 +124,9 @@ def user_reservations(current_user: schemas.User = Depends(get_current_active_us
 def show_reviews():
     return review.get_reviews()
 
-@app.put("/review/create/")
-def create_review():
-    return review.write_review()
+@app.put("/review/create/{hotel}/{text}/{rating}")
+def create_review(hotel: str, text: str, rating: int, current_user: schemas.User = Depends(get_current_active_user)):
+    return review.write_review(current_user, hotel, text, rating)
 
 @app.delete("/reservation/cancel/{id}")
 def cancel_registration(id: int, current_user: schemas.User = Depends(get_current_active_user)):
