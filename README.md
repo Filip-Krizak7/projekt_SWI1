@@ -18,6 +18,7 @@ Use the package manager [pip](https://pip.pypa.io/en/stable/) to install these p
 -   pip install "python-jose[cryptography]"
 -   pip install bcrypt
 -   pip install npm
+-   or run this single command: pip install pymysql, apify-client, uvicorn, typer, fastapi, passlib, python-multipart, sqlmodel, python-jose[cryptography], bcrypt, npm 
 ```
 
 ## Start of backend 

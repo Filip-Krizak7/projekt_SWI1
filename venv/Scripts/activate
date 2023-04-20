@@ -37,7 +37,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="A:\Projekty\swi1_newDb\projekt_SWI1\venv"
+VIRTUAL_ENV="A:\Projekty\SWI_latest\projekt_SWI1\venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

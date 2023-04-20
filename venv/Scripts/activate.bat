@@ -8,7 +8,7 @@ if defined _OLD_CODEPAGE (
     "%SystemRoot%\System32\chcp.com" 65001 > nul
 )
 
-set VIRTUAL_ENV=A:\Projekty\swi1_newDb\projekt_SWI1\venv
+set VIRTUAL_ENV=A:\Projekty\SWI_latest\projekt_SWI1\venv
 
 if not defined PROMPT set PROMPT=$P$G
 
