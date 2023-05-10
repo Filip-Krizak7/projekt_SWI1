@@ -7,8 +7,14 @@ from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 from fastapi.encoders import jsonable_encoder
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
+from fastapi import FastAPI, HTTPException, Depends
+from jose import jwt, JWTError
+from sqlalchemy import create_engine
+from sqlmodel import Session, create_engine, select, delete
 
-import schemas, user_registration, hotel_data, send_mail
+
+import schemas, user_registration, hotel_data, send_mail, review
+
 
 tags_metadata = [
     {
@@ -90,21 +96,21 @@ async def read_users_me(current_user: schemas.User = Depends(get_current_active_
 def show_users():
     return user_registration.select_users()
 
-@app.post("/new_user/{username}/{full_name}/{email}/{hashed_pass}/{disabled}")
-def create_user(username: str, full_name: str, email: str, hashed_pass: str, disabled: schemas.Disabled):
-    print(disabled)
-    user_registration.create_users(username, full_name, email, hashed_pass, disabled)
-    send_mail.new_user_mail(username, email, full_name)
+#@app.post("/new_user/{username}/{full_name}/{email}/{hashed_pass}/{disabled}")
+#def create_user(username: str, full_name: str, email: str, hashed_pass: str, disabled: schemas.Disabled):
+ #   print(disabled)
+  #  user_registration.create_users(username, full_name, email, hashed_pass, disabled)
+   # send_mail.new_user_mail(username, email, full_name)
 
-#@app.post("/new_user/")
-#def create_user(user_data = Body(...)):
-    #user_data = jsonable_encoder(user_data)
-    #if user_data["disabled"]:
-        #user_data["disabled"] = schemas.Disabled(schemas.Disabled.TRUE)
-    #else:
-        #user_data["disabled"] = schemas.Disabled(schemas.Disabled.FALSE)
-    #user_registration.create_users(user_data["username"], user_data["full_name"], user_data["email"], user_data["hashed_pass"], user_data["disabled"])
-    #send_mail.new_user_mail(user_data["username"], user_data["email"], user_data["full_name"])
+@app.post("/new_user/")
+def create_user(user_data = Body(...)):
+    user_data = jsonable_encoder(user_data)
+    if user_data["disabled"]:
+        user_data["disabled"] = schemas.Disabled(schemas.Disabled.TRUE)
+    else:
+        user_data["disabled"] = schemas.Disabled(schemas.Disabled.FALSE)
+    user_registration.create_users(user_data["username"], user_data["full_name"], user_data["email"], user_data["hashed_pass"], user_data["disabled"])
+    send_mail.new_user_mail(user_data["username"], user_data["email"], user_data["full_name"])
 # to return error on frontend, set error in json object as {detail:"Error here..."}
 
 @app.get("/hotel/{city}/{maxPage}/{sortBy}/{minPrice}/{maxPrice}/{rooms}/{adults}/{children}") #{checkIn}/{checkOut}/
@@ -120,9 +126,29 @@ def create_reservation(name: str, address: str, price: int, checkIn: str, checkO
 def user_reservations(current_user: schemas.User = Depends(get_current_active_user)):
     return hotel_data.reservations_from_user(current_user)
 
+@app.get("/review/show/")
+def show_reviews():
+    return review.get_reviews()
+
+
+@app.post("/review/create/{hotel}/{text}/{rating}")
+def create_review(hotel: str, text: str, rating: int, current_user: schemas.User = Depends(get_current_active_user)):
+    return review.write_review(current_user, hotel, text, rating)
+
+
+@app.put("/review/{review_id}")
+def update_review(id: int, hotel: Optional[str] = None, text: Optional[str] = None, rating: Optional[int] = None, current_user: schemas.User = Depends(get_current_active_user)):
+        return review.update_review(id,current_user, hotel, text, rating)
+
+@app.delete("/review/cancel/{id}")
+def delete_review(id: int, current_user: schemas.User = Depends(get_current_active_user)):
+    return review.delete_review(current_user, id)
+
 @app.delete("/reservation/cancel/{id}")
 def cancel_registration(id: int, current_user: schemas.User = Depends(get_current_active_user)):
     return hotel_data.cancel_reservation(current_user, id)
 
+# if __name__ == "__main__": 
+#     uvicorn.run(app, host="192.168.1.245", port=8027)
 if __name__ == "__main__": 
     uvicorn.run(app, host="127.0.0.1", port=8000)

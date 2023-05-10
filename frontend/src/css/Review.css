@@ -1,0 +1,18 @@
+span.review {
+    width: 100%;
+    float: left;
+}
+.ratingData {
+    display: flex;
+}
+.cardData {
+    min-height: 400px;
+}
+.showCardData {
+    justify-content: unset !important;
+}
+.showtheReviewDat hr {
+    float: left;
+    width: 100%;
+    margin: 8px 0;
+}

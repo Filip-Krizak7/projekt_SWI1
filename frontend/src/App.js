@@ -3,6 +3,7 @@ import "./App.css";
 import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
 import Home from "./views/Home";
 import Reservations from "./views/Reservations";
+import Review from "./views/Review"
 import Profile from "./views/Profile";
 import Login from "./views/Login";
 import Register from "./views/Register";
@@ -28,6 +29,14 @@ function App(props) {
             element={
               <Layout>
                 <Reservations />
+              </Layout>
+            }
+          />
+          <Route
+            path="/review"
+            element={
+              <Layout>
+                <Review />
               </Layout>
             }
           />

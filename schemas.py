@@ -1,9 +1,11 @@
-from datetime import timedelta
+from datetime import timedelta, datetime
 from enum import Enum
-from typing import Optional
-
+from typing import List, Optional
+from sqlalchemy import create_engine
 from pydantic import BaseModel, Field
-from sqlmodel import Field, SQLModel
+from sqlmodel import Field, Relationship, Session, SQLModel
+from sqlalchemy.schema import CheckConstraint
+
 
 class users(SQLModel, table=True):
     username: str = Field(primary_key=True)
@@ -12,8 +14,43 @@ class users(SQLModel, table=True):
     hashed_pass: str
     disabled: Optional[str] = None
 
+    reservation: List["reservations"] = Relationship(back_populates="usern")
+    review: List["reviews"] = Relationship(back_populates="usern")
+    
+class reviews(SQLModel, table=True):
+    id: int = Field(primary_key=True)
+
+    username: Optional[str] = Field(default=None, foreign_key="users.username")
+    usern: Optional[users] = Relationship(back_populates="review")
+
+    hotel: Optional[str] = None
+    text: Optional[str] = None
+    rating: int
+
+    
+    # created_at: Optional[datetime] = Field(default_factory=datetime.utcnow)
+
+    # class Meta:
+    #     table = "reviews"
+
+    # @classmethod
+    # def update_table(cls, engine):
+    #     with Session(engine) as session:
+    #         SQLModel.metadata.create_all(engine)
+
+
+    #     sqlite_file_name = "databaze1.db"
+    #     sqlite_url = f"sqlite:///{sqlite_file_name}"
+
+    #     engine = create_engine(sqlite_url, echo=True,)
+
+    #     reviews.update_table(engine)
+
+
 class reservations(SQLModel, table=True):
-    username: str
+    username: str = Field(default=None, foreign_key="users.username")
+    usern: Optional[users] = Relationship(back_populates="reservation")
+
     name: str
     address: str
     price: int

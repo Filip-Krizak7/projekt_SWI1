@@ -1,5 +1,7 @@
 export const CONSTANT = {
   server: "http://127.0.0.1:8000/",
+  // server: " http://192.168.1.245:8027/",
+  // server: "http://122.160.74.251:8027/",
   test: false,
 };
 

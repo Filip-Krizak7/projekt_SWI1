@@ -4,9 +4,10 @@ from fastapi import HTTPException
 import schemas
 
 from sqlalchemy import create_engine
-from sqlmodel import Session, create_engine, select
+from sqlmodel import Session, create_engine, select, delete
 
 import schemas
+from schemas import reviews
 
 sqlite_file_name = "databaze1.db"
 sqlite_url = f"sqlite:///{sqlite_file_name}"
@@ -63,7 +64,7 @@ def create_reservation(username: str, name: str, address: str, price: int, check
         raise ValueError
 
     reservation = schemas.reservations(username=username, name=name, address=address,
-                                       price=price, checkIn=checkIn, checkOut=checkOut, room=room, persons=persons)
+                                      price=price, checkIn=checkIn, checkOut=checkOut, room=room, persons=persons)
     statement = select(schemas.reservations)
 
     with Session(engine) as session:
@@ -93,14 +94,36 @@ def cancel_reservation(user: schemas.User, id: int):
             return "There's no your reservation with this ID"
 
 
+# def reservations_from_user(user: schemas.User):
+#     with Session(engine) as session:
+#         statement = select(schemas.reservations).where(
+#             schemas.reservations.username.__eq__(user.username))
+#         results = session.exec(statement)
+#         reservation_db = []
+#         for reservation in results:
+#             reservation_db.append({
+#                 "_id": reservation.id,
+#                 "name": reservation.name,
+#                 "address": reservation.address,
+#                 "price": reservation.price,
+#                 "checkIn": reservation.checkIn,
+#                 "checkOut": reservation.checkOut,
+#                 "roomType": reservation.room,
+#                 "persons": reservation.persons})
+
+#         return reservation_db
+
+
+
 def reservations_from_user(user: schemas.User):
     with Session(engine) as session:
+        # Get reservations for the logged-in user
         statement = select(schemas.reservations).where(
             schemas.reservations.username.__eq__(user.username))
         results = session.exec(statement)
         reservation_db = []
         for reservation in results:
-            reservation_db.append({
+            reservation_dict = {
                 "_id": reservation.id,
                 "name": reservation.name,
                 "address": reservation.address,
@@ -108,9 +131,28 @@ def reservations_from_user(user: schemas.User):
                 "checkIn": reservation.checkIn,
                 "checkOut": reservation.checkOut,
                 "roomType": reservation.room,
-                "persons": reservation.persons})
+                "persons": reservation.persons
+            }
+
+            # Check if there is a review for this reservation by the logged-in user
+            review_statement = select(reviews).where(
+                (reviews.username == user.username) &
+                (reviews.hotel == reservation_dict['name'])
+            )
+            review_result = session.exec(review_statement).first()
+
+            # If there is a review, add it to the reservation dictionary
+            if review_result:
+                reservation_dict['review'] = {
+                    'text': review_result.text,
+                    'rating': review_result.rating,
+                    'id': review_result.id
+                }
+
+            reservation_db.append(reservation_dict)
 
         return reservation_db
+    
 
 
 # def reservations_from_user(user: schemas.User):

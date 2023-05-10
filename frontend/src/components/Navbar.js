@@ -43,7 +43,14 @@ const Navbar = (props) => {
             <ul className="navbar-nav mr-auto">
               {!props.isLoggedIn ? (
                 <>
-                  <li className="nav-item">
+                  <li className="nav-item signup">
+                    <Link to="/review" className="Button-Custom-1 black">
+                      <span className="content">
+                        <span className="type">Review</span>
+                      </span>
+                    </Link>
+                  </li>
+                  <li className="nav-item signup">
                     <Link to="/login" className="Button-Custom-1 black">
                       <span className="content">
                         <span className="type">Log In</span>
@@ -60,7 +67,14 @@ const Navbar = (props) => {
                 </>
               ) : (
                 <>
-                  <li className="nav-item">
+                <li className="nav-item signup">
+                    <Link to="/review" className="Button-Custom-1 black">
+                      <span className="content">
+                        <span className="type">Review</span>
+                      </span>
+                    </Link>
+                  </li>
+                  <li className="nav-item signup">
                     <Link to="/reservations" className="Button-Custom-1 black">
                       <span className="content">
                         <span className="type">Reservations</span>

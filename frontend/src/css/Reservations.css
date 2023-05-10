@@ -53,3 +53,106 @@
       font-size: 1.5rem;
     }
   }
+
+  button.addratingbutton {
+    font-size: 12px;
+    background: #ffab31;
+    color: #fff;
+    border: none;
+    border-radius: 35px;
+    padding: 6px 10px;
+}
+
+/* .Editicon {
+  position: absolute;
+  top: 60px;
+  right: 10px;
+} */
+.profileImgHeading {
+  text-align: center;
+  font-weight: bold;
+  margin: 0 !important;
+  padding: 18px 0 0;
+  color: #000;
+  font-size: 20px;
+}
+.image_and_namesinvite {
+  margin: 0;
+  padding: 10px 20px;
+}
+.MuiDialog-paperScrollPaper {
+  width: 400px;
+  border-radius: 8px;
+  box-shadow: 5px 5px 6px #00000069;
+}
+.hotelnameDiv span {
+  text-align: center;
+  width: 100%;
+  font-size: 16px;
+  margin-bottom: 12px !important;
+  display: inline-block;
+  font-weight: 500;
+}
+.addjobtopdiv textarea {
+  width: 100%;
+  height: 80px;
+  border: 1px solid #ddd;
+  padding: 10px;
+  border-radius: 8px;
+}
+h4.Describetext_agency_text {
+  font-size: 15px;
+  font-weight: 400;
+  margin: 15px 0 6px;
+}
+p.deslimtsec_4 span {
+  font-size: 12px;
+}
+span.ratingName {
+  font-size: 14px;
+  font-weight: 400;
+}
+p.deslimtsec_4 {
+  margin: 0;
+}
+.CancelAddBtN {
+  background: #000;
+  color: #fff;
+  border: none;
+  font-size: 14px;
+  border-radius: 24px;
+  font-weight: bold;
+  padding: 8px 33px;
+}
+.addeditbtn {
+  border: none;
+  padding: 9px 28px;
+  font-size: 14px;
+  border-radius: 44px;
+  font-weight: 500;
+}
+.MuiDialogActions-spacing {
+  margin-bottom: 24px;
+}
+.delteicons {
+  font-size: 17px;
+  color: red;
+  cursor: pointer;
+}
+.editconsRating {
+  padding: 2px 6px;
+  font-size: 17px;
+  cursor: pointer;
+}
+span.rating {
+  width: 100%;
+  display: flex;
+}
+.Editicon {
+  text-align: right;
+  width: 100%;
+}
+.add-btnratingb {
+  width: 100%;
+  text-align: right;
+}
